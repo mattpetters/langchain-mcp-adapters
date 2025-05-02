@@ -28,8 +28,8 @@ DEFAULT_SSE_READ_TIMEOUT = 60 * 5
 DEFAULT_STREAMABLE_HTTP_TIMEOUT = timedelta(seconds=30)
 DEFAULT_STREAMABLE_HTTP_SSE_READ_TIMEOUT = timedelta(seconds=60 * 5)
 
-class Connection(TypedDict):
 
+class Connection(TypedDict):
     session_kwargs: dict[str, Any] | None
     """Additional keyword arguments to pass to the ClientSession"""
 
@@ -106,7 +106,10 @@ class MultiServerMCPClient:
 
     def __init__(
         self,
-        connections: dict[str, StdioConnection | SSEConnection | WebsocketConnection | StreamableHttpConnection] | None = None,
+        connections: dict[
+            str, StdioConnection | SSEConnection | WebsocketConnection | StreamableHttpConnection
+        ]
+        | None = None,
     ) -> None:
         """Initialize a MultiServerMCPClient with MCP servers connections.
 
@@ -202,7 +205,9 @@ class MultiServerMCPClient:
                 url=kwargs["url"],
                 headers=kwargs.get("headers"),
                 timeout=kwargs.get("timeout", DEFAULT_STREAMABLE_HTTP_TIMEOUT),
-                sse_read_timeout=kwargs.get("sse_read_timeout", DEFAULT_STREAMABLE_HTTP_SSE_READ_TIMEOUT),
+                sse_read_timeout=kwargs.get(
+                    "sse_read_timeout", DEFAULT_STREAMABLE_HTTP_SSE_READ_TIMEOUT
+                ),
                 session_kwargs=kwargs.get("session_kwargs"),
             )
         elif transport == "stdio":
