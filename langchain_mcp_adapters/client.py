@@ -339,7 +339,7 @@ class MultiServerMCPClient:
         streamable_http_transport = await self.exit_stack.enter_async_context(
             streamablehttp_client(url, headers, timeout, sse_read_timeout)
         )
-        read, write, _ = streamable_http_transport
+        read, write, get_session_id_func = streamable_http_transport
         session_kwargs = session_kwargs or {}
         session = cast(
             ClientSession,
@@ -347,6 +347,9 @@ class MultiServerMCPClient:
         )
 
         await self._initialize_session_and_load_tools(server_name, session)
+
+        # Potentially store get_session_id_func in a dictionary mapped to server_name
+        # self.session_id_getters[server_name] = get_session_id_func
 
     async def connect_to_server_via_websocket(
         self,
